@@ -99,6 +99,7 @@ const handleNoteDelete = (e) => {
 const handleNoteView = (e) => {
   e.preventDefault();
   activeNote = JSON.parse(e.target.parentElement.getAttribute('data-note'));
+  console.log(activeNote)
   renderActiveNote();
 };
 
@@ -129,6 +130,8 @@ const renderNoteList = async (notes) => {
   const createLi = (text, delBtn = true) => {
     const liEl = document.createElement('li');
     liEl.classList.add('list-group-item');
+    liEl.classList.add('d-flex');
+    liEl.classList.add('justify-content-around');
 
     const spanEl = document.createElement('span');
     spanEl.classList.add('list-item-title');
@@ -141,7 +144,7 @@ const renderNoteList = async (notes) => {
       const delBtnEl = document.createElement('i');
       delBtnEl.classList.add(
         'fas',
-        'fa-trash-alt',
+        'fa-trash-restore',
         'float-right',
         'text-danger',
         'delete-note'

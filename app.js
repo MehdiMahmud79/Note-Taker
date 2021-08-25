@@ -1,9 +1,9 @@
 const express = require("express");
 const path = require('path');
 const routesToApi = require("./routes/routes.js");
-const {logger,jsonMiddleWare , urlMiddleWarre,uuid}= require('./helpers/middleWares');
+const {logger,jsonMiddleWare , urlMiddleWarre}= require('./helpers/middleWares');
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3100;
 const app = express();
 
 // Init and Body Parser Middleware
@@ -27,5 +27,5 @@ app.get('*', (req, res) =>
 );
 
 app.listen(PORT, () =>
-  console.log(`serving files from public on port http://localhost:${PORT}``)
+  console.log(`serving files from public on port http://localhost:${PORT}`)
 );

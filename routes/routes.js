@@ -2,7 +2,7 @@ const express = require("express");
 const fs = require('fs');
 const router = express.Router();
 const dbNotes = require('../db/db.json');
-const {logger,jsonMiddleWare , urlMiddleWarre,uuid}= require('./helpers/middleWares');
+const {logger,jsonMiddleWare , urlMiddleWarre,uuid}= require('../helpers/middleWares');
 
 const writeToFile = (dbPath, content) =>
  fs.writeFile(dbPath, JSON.stringify(content, null, 4), (err) =>
@@ -15,7 +15,7 @@ const updateDb = (file, content) => {
       console.error(err);
     } else {
       const parsedNotes = JSON.parse(previousNotes);
-      parsedData.push(content);
+      parsedNotes.push(content);
       writeToFile(file, parsedNotes);
     }
   });
@@ -46,21 +46,19 @@ router.delete(`/:id`, (req, res) => {
   var notes = dbNotes;
   var reqIdToDelete = req.params.id;
 
-  const isNoteIndex= (noteEl)=>noteEl.id=reqIdToDelete;
+  const requiredNote=notes.filter(noteEl=> noteEl.id==reqIdToDelete);
+  const requiredIndex = notes.findIndex(el => el.id == reqIdToDelete);
 
-  const noteIndexToDelete=notes.findIndex(isNoteIndex);
-
-  if(!isNoteIndexm || !noteIndexToDelete){
+  if(!requiredNote){
     const response = {
       status: 'failure',
-      body: 'note not found',
+      body: `note with ${reqIdToDelete} not found`,
     };
       console.log(response)
       res.json(response);
   }
-  requiredNote=notes[noteIndexToDelete];
-
-  notes.splice(noteIndexToDelete,1);
+  // requiredNote=notes[noteIndexToDelete];
+  notes.splice(requiredIndex,1);
   // stringify notes
 const updatedNotes=JSON.stringify(notes);
         fs.writeFile(`./db/db.json`, updatedNotes, `utf8`, (err) =>
