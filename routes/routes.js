@@ -35,20 +35,6 @@ console.log('%c the green hulk got mad!', 'color: green; font-weight: bold;');
 
 });
 
-// router.get("/", (req, res) =>{
-//   console.log(`${req.method} request has been received.`);
-//  fs.readFile(`${dbNotes}`, "utf8", (err, previousNotes) => {
-//    console.log((previousNotes);
-//     // if (err) {
-//     //   console.error(err);
-//     // } else {
-//     // // res.json(JSON.parse(previousNotes))
-//     // console.log("Error:", err);
-//     // }
-// });
-//   });
-
-
 // post a new note to the server
 router.post("/", (req, res) => {
   console.info(`Adding a new note due to receiving: ${req.method} request.`);
