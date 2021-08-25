@@ -41,10 +41,9 @@ npm i
 ### this will install the following dependencies 
 ```bash
  "dependencies": {
-    "email-validator": "^2.0.4",
-    "inquirer": "^8.1.2",
-    "uuid": "^8.3.2",
-    "uuid-validate": "0.0.3"
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "util": "^0.12.4"
   }
 
 ```
