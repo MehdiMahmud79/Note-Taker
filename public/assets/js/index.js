@@ -71,7 +71,8 @@ const handleNoteSave = () => {
     title: noteTitle.value,
     text: noteText.value,
   };
-  saveNote(newNote).then(() => {
+  saveNote(newNote)
+  .then(() => {
     getAndRenderNotes();
     renderActiveNote();
   });
@@ -92,6 +93,8 @@ const handleNoteDelete = (e) => {
   deleteNote(noteId).then(() => {
     getAndRenderNotes();
     renderActiveNote();
+    getAndRenderNotes();
+
   });
 };
 
@@ -158,14 +161,14 @@ const renderNoteList = async (notes) => {
   };
 
   if (jsonNotes.length === 0) {
-    noteListItems.push(createLi('No saved Notes', false));
+    noteListItems.unshift(createLi('No saved Notes', false));
   }
 
   jsonNotes.forEach((note) => {
     const li = createLi(note.title);
     li.dataset.note = JSON.stringify(note);
 
-    noteListItems.push(li);
+    noteListItems.unshift(li);
   });
 
   if (window.location.pathname === '/notes') {
