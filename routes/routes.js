@@ -41,6 +41,47 @@ router.post('/', (req, res) => {
   }
 });
 
+router.delete(`/:id`, (req, res) => {
+  console.log(`${req.method} request received`)
+  var notes = dbNotes;
+  var reqIdToDelete = req.params.id;
+
+  const isNoteIndex= (noteEl)=>noteEl.id=reqIdToDelete;
+
+  const noteIndexToDelete=notes.findIndex(isNoteIndex);
+
+  if(!isNoteIndexm || !noteIndexToDelete){
+    const response = {
+      status: 'failure',
+      body: 'note not found',
+    };
+      console.log(response)
+      res.json(response);
+  }
+  requiredNote=notes[noteIndexToDelete];
+
+  notes.splice(noteIndexToDelete,1);
+  // stringify notes
+const updatedNotes=JSON.stringify(notes);
+        fs.writeFile(`./db/db.json`, updatedNotes, `utf8`, (err) =>
+       err
+         ? console.error(err)
+         : console.log(
+             `Note ${requiredNote} has been deleted from the database!`
+           )
+     );  
+ 
+     const response = {
+      status: 'success',
+      body: { note: requiredNote,
+              action: "deleted"
+            } ,
+       };
+        console.log(response)
+        res.json(response);
+       return;               
+      
+});
 
  
 
