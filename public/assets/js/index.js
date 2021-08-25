@@ -93,8 +93,6 @@ const handleNoteDelete = (e) => {
   deleteNote(noteId).then(() => {
     getAndRenderNotes();
     renderActiveNote();
-    getAndRenderNotes();
-
   });
 };
 
@@ -117,6 +115,7 @@ const handleRenderSaveBtn = () => {
     hide(saveNoteBtn);
   } else {
     show(saveNoteBtn);
+    
   }
 };
 
@@ -138,7 +137,7 @@ const renderNoteList = async (notes) => {
 
     const spanEl = document.createElement('span');
     spanEl.classList.add('list-item-title');
-    spanEl.innerText = text;
+    spanEl.innerText = `📝: ${text}`;
     spanEl.addEventListener('click', handleNoteView);
 
     liEl.append(spanEl);

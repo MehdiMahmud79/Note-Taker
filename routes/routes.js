@@ -1,13 +1,10 @@
 const express = require("express");
 const fs = require("fs");
 const router = express.Router();
-const dbNotes = require("../db/db.json");
-const {
-  logger,
-  jsonMiddleWare,
-  urlMiddleWarre,
-  uuid,
-} = require("../helpers/middleWares");
+var dbNotes = require("../db/db.json");
+
+if(dbNotes==="")dbNotes=[];
+const { uuid} = require("../helpers/middleWares");
 
 const writeToFile = (dbPath, content) =>
   fs.writeFile(dbPath, JSON.stringify(content, null, 4), (err) =>
@@ -31,10 +28,31 @@ const updateDb = (file, content) => {
 
 router.get("/", (req, res) => {
   res.json(dbNotes);
-console.log('%c the green hulk got mad!', 'color: green; font-weight: bold;');
 
 });
 
+//  get request a note by id
+router.get(`/:id`, (req, res) => {
+  console.log(`${req.method} request received`, 'background: #222; color: #bada55');
+  var notes = dbNotes;
+  var reqIdToDelete = req.params.id;
+
+  const requiredNote = notes.filter((noteEl) => noteEl.id == reqIdToDelete);
+  console.log("sadadasd ", requiredNote)
+  if (requiredNote =="") {
+    const response = {
+      status: "failure",
+      body: `note with ${reqIdToDelete} not found`,
+    };
+    console.log(response);
+    res.json(response);
+    return
+  }
+  
+  console.log(requiredNote);
+  res.json(requiredNote);
+  return;
+});
 // post a new note to the server
 router.post("/", (req, res) => {
   console.info(`Adding a new note due to receiving: ${req.method} request.`);
@@ -47,7 +65,8 @@ router.post("/", (req, res) => {
   };
 
   updateDb("./db/db.json", receivedNote);
-  res.json(`Note ${receivedNote.title} added successfully.`);
+   res.json(`Note ${receivedNote.title} added successfully.`);
+  
 });
 
 // delete a note from the list
@@ -86,27 +105,6 @@ router.delete(`/:id`, (req, res) => {
   return;
 });
 
-//  get request a note by id
-router.get(`/:id`, (req, res) => {
-  console.log(`${req.method} request received`, 'background: #222; color: #bada55');
-  var notes = dbNotes;
-  var reqIdToDelete = req.params.id;
 
-  const requiredNote = notes.filter((noteEl) => noteEl.id == reqIdToDelete);
-  console.log("sadadasd ", requiredNote)
-  if (requiredNote =="") {
-    const response = {
-      status: "failure",
-      body: `note with ${reqIdToDelete} not found`,
-    };
-    console.log(response);
-    res.json(response);
-    return
-  }
-  
-  console.log(requiredNote);
-  res.json(requiredNote);
-  return;
-});
 
 module.exports = router;
