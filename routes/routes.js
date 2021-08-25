@@ -28,7 +28,26 @@ const updateDb = (file, content) => {
   });
 };
 // get request to the all notes
-router.get("/", (req, res) => res.json(dbNotes));
+
+router.get("/", (req, res) => {
+  res.json(dbNotes);
+console.log('%c the green hulk got mad!', 'color: green; font-weight: bold;');
+
+});
+
+// router.get("/", (req, res) =>{
+//   console.log(`${req.method} request has been received.`);
+//  fs.readFile(`${dbNotes}`, "utf8", (err, previousNotes) => {
+//    console.log((previousNotes);
+//     // if (err) {
+//     //   console.error(err);
+//     // } else {
+//     // // res.json(JSON.parse(previousNotes))
+//     // console.log("Error:", err);
+//     // }
+// });
+//   });
+
 
 // post a new note to the server
 router.post("/", (req, res) => {
@@ -36,9 +55,9 @@ router.post("/", (req, res) => {
   const { title, text } = req.body;
   if (!req.body) res.error(`Error in posting ${receivedNote.title}.`);
   const receivedNote = {
+    id: uuid(),   
     title,
-    text,
-    id: uuid(),
+    text
   };
 
   updateDb("./db/db.json", receivedNote);
@@ -47,7 +66,7 @@ router.post("/", (req, res) => {
 
 // delete a note from the list
 router.delete(`/:id`, (req, res) => {
-  console.log(`${req.method} request received`);
+  console.log(`${req.method} request received`, 'background: #222; color: #bada55');
   var notes = dbNotes;
   var reqIdToDelete = req.params.id;
 
@@ -69,7 +88,7 @@ router.delete(`/:id`, (req, res) => {
   fs.writeFile(`./db/db.json`, updatedNotes, `utf8`, (err) =>
     err
       ? console.error(err)
-      : console.log(`Note ${requiredNote} has been deleted from the database!`)
+      : console.table(`Note ${reqIdToDelete} has been deleted from the database!`)
   );
 
   const response = {
@@ -78,6 +97,29 @@ router.delete(`/:id`, (req, res) => {
   };
   console.log(response);
   res.json(response);
+  return;
+});
+
+//  get request a note by id
+router.get(`/:id`, (req, res) => {
+  console.log(`${req.method} request received`, 'background: #222; color: #bada55');
+  var notes = dbNotes;
+  var reqIdToDelete = req.params.id;
+
+  const requiredNote = notes.filter((noteEl) => noteEl.id == reqIdToDelete);
+  console.log("sadadasd ", requiredNote)
+  if (requiredNote =="") {
+    const response = {
+      status: "failure",
+      body: `note with ${reqIdToDelete} not found`,
+    };
+    console.log(response);
+    res.json(response);
+    return
+  }
+  
+  console.log(requiredNote);
+  res.json(requiredNote);
   return;
 });
 
