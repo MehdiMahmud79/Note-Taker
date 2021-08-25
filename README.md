@@ -75,7 +75,5 @@ The following API routes should be created:
 * Github: https://github.com/MehdiMahmud79/Note-Taker
 * Live: https://mehdimahmud79.github.io/Note-Taker/
 
-
-
 ---
 © 2021 Mehdi Mahmud

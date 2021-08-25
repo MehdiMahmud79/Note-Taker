@@ -25,7 +25,7 @@ const updateDb = async(filePath, content) => {
 // get request to the all notes
 router.get("/", async (req, res) => {
   try {
-    console.log(`${req.method} request has been received.`);
+    console.log(`${req.method} request has been received.\n`);
     const notes = await readFile("./db/db.json");
     res.json(JSON.parse(notes));
   } catch (error) {
@@ -35,14 +35,13 @@ router.get("/", async (req, res) => {
 
 //  get request a note by id
 router.get(`/:id`, (req, res) => {
-  console.log(
-    `${req.method} request received`,
-  );
+  console.log(`${req.method} request has been received.\n`);
+
   var notes = dbNotes;
   var reqIdToview = req.params.id;
-
+console.log(reqIdToview)
   const requiredNote = notes.filter((noteEl) => noteEl.id == reqIdToview);
-  console.log("sadadasd ", requiredNote);
+
   if (requiredNote == "") {
     const response = {
       status: "404",
@@ -57,9 +56,10 @@ router.get(`/:id`, (req, res) => {
   res.json(requiredNote);
   return;
 });
+
 // post a new note to the server
 router.post("/", (req, res) => {
-  console.info(`Adding a new note due to receiving: ${req.method} request.`);
+  console.info(`Adding a new note due to receiving: ${req.method} request.\n`);
   const { title, text } = req.body;
   if (!req.body) res.error(`Error in posting ${receivedNote.title}.`);
   const receivedNote = {
@@ -69,49 +69,36 @@ router.post("/", (req, res) => {
   };
 
   updateDb("./db/db.json", receivedNote);
-  res.json(`Note ${receivedNote.title} added successfully.`);
+  res.json(`Note ${receivedNote.title} added successfully.\n`);
 });
 
-// delete a note from the list
-router.delete(`/:id`, (req, res) => {
-  console.log(
-    `${req.method} request received`,
-    "background: #222; color: #bada55"
-  );
-  var notes = dbNotes;
-  var reqIdToDelete = req.params.id;
-
-  const requiredNote = notes.filter((noteEl) => noteEl.id == reqIdToDelete);
-  const requiredIndex = notes.findIndex((el) => el.id == reqIdToDelete);
-
-  if (!requiredNote) {
-    const response = {
-      status: "404",
-      body: `note with ${reqIdToDelete} not found`,
-    };
-    console.log(response);
+router.delete('/:id', (req, res) => {
+  console.log(`${req.method} request has been received.`);
+  readFromFile('./db/db.json')
+    .then((data) => {
+      const notes = JSON.parse(data);
+      const filteredNotes = notes.filter(note => note.id !== req.params.id);
+      if (filteredNotes.length==notes.length) {
+            const response = {
+              status: "404",
+              body: `note with id ${req.params.id} not found`,
+            };
+                console.log(response);
     res.json(response);
+    return
   }
-  // requiredNote=notes[noteIndexToDelete];
-  notes.splice(requiredIndex, 1);
-  // stringify notes
-  const updatedNotes = JSON.stringify(notes);
-  
-  writeFile(`./db/db.json`, updatedNotes, `utf8`, (err) =>
-    err
-      ? console.error(err)
-      : console.table(
-          `Note ${reqIdToDelete} has been deleted from the database!`
-        )
-  );
-
-  const response = {
-    status: "success",
+      res.json(filteredNotes);
+      writeFile("./db/db.json", JSON.stringify(filteredNotes));
+    })
+    .catch((err) =>{
+        const response = {
+    status: "400",
     body: { note: reqIdToDelete, action: "deleted" },
-  };
-  console.log(response);
+  }; 
   res.json(response);
-  return;
-});
+     console.log("Error:", err)});
+})
+
+const readFromFile = util.promisify(fs.readFile);
 
 module.exports = router;
