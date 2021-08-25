@@ -9,26 +9,20 @@ const writeFile = util.promisify(fs.writeFile);
 
 if (dbNotes === "") dbNotes = [];
 
-const writeToFile = (dbPath, content) =>
-  writeFile(dbPath, JSON.stringify(content, null, 4), (err) =>
-    err
-      ? console.error(err)
-      : console.info(`\nData written to ${dbPath} successfully!`)
-  );
-
+//  write the new note to the database
 const updateDb = async(filePath, content) => {
   try{
     const previousNotes = await readFile(filePath, "utf8");
       const parsedNotes = JSON.parse(previousNotes);
       parsedNotes.push(content);
-      writeToFile(filePath, parsedNotes);    
+      writeFile(filePath, JSON.stringify(parsedNotes));    
   } catch(error){
   console.error(err);
   }
  
 };
-// get request to the all notes
 
+// get request to the all notes
 router.get("/", async (req, res) => {
   try {
     console.log(`${req.method} request has been received.`);
@@ -43,17 +37,16 @@ router.get("/", async (req, res) => {
 router.get(`/:id`, (req, res) => {
   console.log(
     `${req.method} request received`,
-    "background: #222; color: #bada55"
   );
   var notes = dbNotes;
-  var reqIdToDelete = req.params.id;
+  var reqIdToview = req.params.id;
 
-  const requiredNote = notes.filter((noteEl) => noteEl.id == reqIdToDelete);
+  const requiredNote = notes.filter((noteEl) => noteEl.id == reqIdToview);
   console.log("sadadasd ", requiredNote);
   if (requiredNote == "") {
     const response = {
-      status: "failure",
-      body: `note with ${reqIdToDelete} not found`,
+      status: "404",
+      body: `note with ${reqIdToview} not found`,
     };
     console.log(response);
     res.json(response);
@@ -93,7 +86,7 @@ router.delete(`/:id`, (req, res) => {
 
   if (!requiredNote) {
     const response = {
-      status: "failure",
+      status: "404",
       body: `note with ${reqIdToDelete} not found`,
     };
     console.log(response);
@@ -103,7 +96,8 @@ router.delete(`/:id`, (req, res) => {
   notes.splice(requiredIndex, 1);
   // stringify notes
   const updatedNotes = JSON.stringify(notes);
-  fs.writeFile(`./db/db.json`, updatedNotes, `utf8`, (err) =>
+  
+  writeFile(`./db/db.json`, updatedNotes, `utf8`, (err) =>
     err
       ? console.error(err)
       : console.table(
