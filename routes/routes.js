@@ -2,9 +2,14 @@ const express = require("express");
 const fs = require("fs");
 const router = express.Router();
 var dbNotes = require("../db/db.json");
+const util = require('util');
+const { uuid} = require("../helpers/middleWares");
+const readFile = util.promisify(fs.readFile);
+
 
 if(dbNotes==="")dbNotes=[];
-const { uuid} = require("../helpers/middleWares");
+
+
 
 const writeToFile = (dbPath, content) =>
   fs.writeFile(dbPath, JSON.stringify(content, null, 4), (err) =>
@@ -26,9 +31,14 @@ const updateDb = (file, content) => {
 };
 // get request to the all notes
 
-router.get("/", (req, res) => {
-  res.json(dbNotes);
-
+router.get('/', async(req, res) => {
+  try{
+  console.log(`${req.method} request has been received.`);
+  const notes=await readFile('./db/db.json');
+  res.json(JSON.parse(notes));
+  } catch(error){
+      console.error("Error in loading the database:", error);
+}
 });
 
 //  get request a note by id
