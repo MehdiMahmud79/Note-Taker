@@ -40,18 +40,15 @@ router.get(`/:id`, async(req, res) => {
   var reqId = req.params.id;
 
   const requiredNote = await notes.filter((noteEl) => noteEl.id == reqId);
-  console.log("Required Note is: ",requiredNote)
-
-  if (requiredNote == "") {
-    const response = {
-      status: "404",
-      body: `note with id ${reqId} not found we have found ${requiredNote}`,
-    };
-    res.json(response);
-    return;
+  if (typeof requiredNote[0] != "undefined")  {
+    res.json(requiredNote[0]);
+    return
   }
-  res.json(requiredNote);
-  return;
+  res.status(400).json({
+    status: 'error',
+    error: `note with id ${reqId} not found.`,
+  });
+ 
 });
 
 // post a new note to the server
@@ -79,8 +76,8 @@ router.delete("/:id", (req, res) => {
         const response = {
           status: "404",
           body: `note with id ${req.params.id} not found`,
+          action:"Note deleted"
         };
-        console.log(response);
         res.json(response);
         return;
       }
@@ -88,12 +85,12 @@ router.delete("/:id", (req, res) => {
       writeFile("./db/db.json", JSON.stringify(filteredNotes));
     })
     .catch((err) => {
-      const response = {
-        status: "400",
-        body: { note: reqIdToDelete, action: "deleted" },
-      };
-      res.json(response);
-      console.log("Error:", err);
+      
+      res.status(400).json({
+        status: 'error',
+        error: `note with id ${ req.params.id} not found.`,
+      });
+     
     });
 });
 
