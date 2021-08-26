@@ -33,13 +33,13 @@ router.get("/", async (req, res) => {
 });
 
 //  get request a note by id
-router.get(`/:id`, (req, res) => {
+router.get(`/:id`, async(req, res) => {
   console.log(`${req.method} request has been received.\n`);
 
   var notes = dbNotes;
   var reqId = req.params.id;
 
-  const requiredNote = notes.filter((noteEl) => noteEl.id == reqId);
+  const requiredNote = await notes.filter((noteEl) => noteEl.id == reqId);
   console.log("Required Note is: ",requiredNote)
 
   if (requiredNote == "") {
