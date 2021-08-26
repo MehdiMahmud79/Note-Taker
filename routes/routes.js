@@ -33,26 +33,52 @@ router.get("/", async (req, res) => {
 });
 
 //  get request a note by id
-router.get("/:id", (req, res) => {
-  console.log(`${req.method} request has been received.\n`);
+// router.get("/:id", (req, res) => {
+//   console.log(`${req.method} request has been received.\n`);
 
-  var notes = dbNotes;
-  var reqId = req.params.id;
+//   var notes = dbNotes;
+//   var reqId = req.params.id;
 
-  const requiredNote =  notes.filter((noteEl) => noteEl.id == reqId);
-  res.json(requiredNote[0]);
+//   const requiredNote =  notes.filter((noteEl) => noteEl.id == reqId);
+//   res.json(requiredNote[0]);
 
-  // if (typeof requiredNote[0] != "undefined")  {
-  //   res.json(requiredNote[0]);
-  //   return
-  // }
-  // res.status(400).json({
-  //   status: 'error',
-  //   error: `note with id ${reqId} not found.`,
-  // });
+//   // if (typeof requiredNote[0] != "undefined")  {
+//   //   res.json(requiredNote[0]);
+//   //   return
+//   // }
+//   // res.status(400).json({
+//   //   status: 'error',
+//   //   error: `note with id ${reqId} not found.`,
+//   // });
  
+// });
+router.get("/:id", (req, res) => {
+  console.log(`${req.method} request has been received.`);
+  readFile("./db/db.json")
+    .then((data) => {
+      const notes = JSON.parse(data);
+      const filteredNotes = notes.filter((note) => note.id == req.params.id);
+      // if (filteredNotes.length == notes.length) {
+      //   const response = {
+      //     status: "404",
+      //     body: `note with id ${req.params.id} not found`,
+      //     action:"Note deleted"
+      //   };
+      //   res.json(response);
+      //   return;
+      // }
+      res.json(filteredNotes);
+      // writeFile("./db/db.json", JSON.stringify(filteredNotes));
+    })
+    .catch((err) => {
+      
+      res.status(400).json({
+        status: 'error',
+        error: `note with id ${ req.params.id} not found.`,
+      });
+     
+    });
 });
-
 // post a new note to the server
 router.post("/", (req, res) => {
   console.info(`Adding a new note due to receiving: ${req.method} request.\n`);
