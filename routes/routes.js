@@ -33,7 +33,7 @@ router.get("/", async (req, res) => {
 });
 
 //  get request a note by id
-router.get(`/:id`, async(req, res) => {
+router.get("/:id", async(req, res) => {
   console.log(`${req.method} request has been received.\n`);
 
   var notes = dbNotes;
