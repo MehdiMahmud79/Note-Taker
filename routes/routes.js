@@ -10,16 +10,15 @@ const writeFile = util.promisify(fs.writeFile);
 if (dbNotes === "") dbNotes = [];
 
 //  write the new note to the database
-const updateDb = async(filePath, content) => {
-  try{
+const updateDb = async (filePath, content) => {
+  try {
     const previousNotes = await readFile(filePath, "utf8");
-      const parsedNotes = JSON.parse(previousNotes);
-      parsedNotes.push(content);
-      writeFile(filePath, JSON.stringify(parsedNotes));    
-  } catch(error){
-  console.error(err);
+    const parsedNotes = JSON.parse(previousNotes);
+    parsedNotes.push(content);
+    writeFile(filePath, JSON.stringify(parsedNotes));
+  } catch (error) {
+    console.error(err);
   }
- 
 };
 
 // get request to the all notes
@@ -38,21 +37,19 @@ router.get(`/:id`, (req, res) => {
   console.log(`${req.method} request has been received.\n`);
 
   var notes = dbNotes;
-  var reqIdToview = req.params.id;
-console.log(reqIdToview)
-  const requiredNote = notes.filter((noteEl) => noteEl.id == reqIdToview);
+  var reqId = req.params.id;
+
+  const requiredNote = notes.filter((noteEl) => noteEl.id == reqId);
+  console.log("Required Note is: ",requiredNote)
 
   if (requiredNote == "") {
     const response = {
       status: "404",
-      body: `note with ${reqIdToview} not found`,
+      body: `note with ${reqId} not found`,
     };
-    console.log(response);
     res.json(response);
     return;
   }
-
-  console.log(requiredNote);
   res.json(requiredNote);
   return;
 });
@@ -72,32 +69,33 @@ router.post("/", (req, res) => {
   res.json(`Note ${receivedNote.title} added successfully.\n`);
 });
 
-router.delete('/:id', (req, res) => {
+router.delete("/:id", (req, res) => {
   console.log(`${req.method} request has been received.`);
-  readFromFile('./db/db.json')
+  readFromFile("./db/db.json")
     .then((data) => {
       const notes = JSON.parse(data);
-      const filteredNotes = notes.filter(note => note.id !== req.params.id);
-      if (filteredNotes.length==notes.length) {
-            const response = {
-              status: "404",
-              body: `note with id ${req.params.id} not found`,
-            };
-                console.log(response);
-    res.json(response);
-    return
-  }
+      const filteredNotes = notes.filter((note) => note.id !== req.params.id);
+      if (filteredNotes.length == notes.length) {
+        const response = {
+          status: "404",
+          body: `note with id ${req.params.id} not found`,
+        };
+        console.log(response);
+        res.json(response);
+        return;
+      }
       res.json(filteredNotes);
       writeFile("./db/db.json", JSON.stringify(filteredNotes));
     })
-    .catch((err) =>{
-        const response = {
-    status: "400",
-    body: { note: reqIdToDelete, action: "deleted" },
-  }; 
-  res.json(response);
-     console.log("Error:", err)});
-})
+    .catch((err) => {
+      const response = {
+        status: "400",
+        body: { note: reqIdToDelete, action: "deleted" },
+      };
+      res.json(response);
+      console.log("Error:", err);
+    });
+});
 
 const readFromFile = util.promisify(fs.readFile);
 
