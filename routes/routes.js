@@ -68,7 +68,7 @@ router.post("/", (req, res) => {
 
 router.delete("/:id", (req, res) => {
   console.log(`${req.method} request has been received.`);
-  readFromFile("./db/db.json")
+  readFile("./db/db.json")
     .then((data) => {
       const notes = JSON.parse(data);
       const filteredNotes = notes.filter((note) => note.id !== req.params.id);
@@ -94,6 +94,5 @@ router.delete("/:id", (req, res) => {
     });
 });
 
-const readFromFile = util.promisify(fs.readFile);
 
 module.exports = router;
