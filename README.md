@@ -34,7 +34,6 @@ The following images show the web application's appearance and functionality:
 ## 🛠️ 
 ##  Installation
 ```bash
-npm init
 npm i
 ```
 
@@ -72,7 +71,10 @@ The following API routes should be created:
 
 ## Websites
 * Github: https://github.com/MehdiMahmud79/Note-Taker
+
 * Live: https://mehdimahmud79.github.io/Note-Taker/
+
+* Heroku: https://mehdi-note-taker.herokuapp.com/
 
 ---
 © 2021 Mehdi Mahmud
