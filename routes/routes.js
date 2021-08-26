@@ -40,14 +40,16 @@ router.get("/:id", async(req, res) => {
   var reqId = req.params.id;
 
   const requiredNote = await notes.filter((noteEl) => noteEl.id == reqId);
-  if (typeof requiredNote[0] != undefined)  {
-    res.json(requiredNote[0]);
-    return
-  }
-  res.status(400).json({
-    status: 'error',
-    error: `note with id ${reqId} not found.`,
-  });
+  res.json(requiredNote[0]);
+
+  // if (typeof requiredNote[0] != "undefined")  {
+  //   res.json(requiredNote[0]);
+  //   return
+  // }
+  // res.status(400).json({
+  //   status: 'error',
+  //   error: `note with id ${reqId} not found.`,
+  // });
  
 });
 
