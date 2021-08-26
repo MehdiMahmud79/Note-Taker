@@ -45,7 +45,7 @@ router.get(`/:id`, async(req, res) => {
   if (requiredNote == "") {
     const response = {
       status: "404",
-      body: `note with id ${reqId} not found`,
+      body: `note with id ${reqId} not found we have found ${requiredNote}`,
     };
     res.json(response);
     return;
