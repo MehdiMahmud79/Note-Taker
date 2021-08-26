@@ -27,9 +27,9 @@ The application consists ofthe front end and the back end, connect the two, and 
 
 The following images show the web application's appearance and functionality:
 
-![Existing notes are listed in the left-hand column with empty fields on the right-hand side for the new note’s title and text.](./Assets/11-express-homework-demo-01.png)
+![App usage](./assets/screen.gif)
 
-![Note titled “Balance accounts” reads, “Balance account books by end of day Monday,” with other notes listed on the left.](./Assets/11-express-homework-demo-02.png)
+![API requests.](./assets/api.gif)
 
 ## 🛠️ 
 ##  Installation
@@ -72,9 +72,9 @@ The following API routes should be created:
 ## Websites
 * Github: https://github.com/MehdiMahmud79/Note-Taker
 
-* Live: https://mehdimahmud79.github.io/Note-Taker/
+* 🌐 Live: https://mehdimahmud79.github.io/Note-Taker/
 
-* Heroku: https://mehdi-note-taker.herokuapp.com/
+* ⚛️ Heroku: https://mehdi-note-taker.herokuapp.com/
 
 ---
 © 2021 Mehdi Mahmud
