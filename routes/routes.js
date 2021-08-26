@@ -58,17 +58,17 @@ router.get("/:id", (req, res) => {
     .then((data) => {
       const notes = JSON.parse(data);
       const filteredNotes = notes.filter((note) => note.id == req.params.id);
-      // if (filteredNotes.length == notes.length) {
-      //   const response = {
-      //     status: "404",
-      //     body: `note with id ${req.params.id} not found`,
-      //     action:"Note deleted"
-      //   };
-      //   res.json(response);
-      //   return;
-      // }
+      console.log(filteredNotes)
+      if (filteredNotes.length == 0) {
+        const response = {
+          status: "404",
+          body: `note with id ${req.params.id} not found`,
+          action:"Note deleted"
+        };
+        res.json(response);
+        return;
+      }
       res.json(filteredNotes);
-      // writeFile("./db/db.json", JSON.stringify(filteredNotes));
     })
     .catch((err) => {
       
