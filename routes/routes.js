@@ -31,27 +31,7 @@ router.get("/", async (req, res) => {
     console.error("Error in loading the database:", error);
   }
 });
-
-//  get request a note by id
-// router.get("/:id", (req, res) => {
-//   console.log(`${req.method} request has been received.\n`);
-
-//   var notes = dbNotes;
-//   var reqId = req.params.id;
-
-//   const requiredNote =  notes.filter((noteEl) => noteEl.id == reqId);
-//   res.json(requiredNote[0]);
-
-//   // if (typeof requiredNote[0] != "undefined")  {
-//   //   res.json(requiredNote[0]);
-//   //   return
-//   // }
-//   // res.status(400).json({
-//   //   status: 'error',
-//   //   error: `note with id ${reqId} not found.`,
-//   // });
- 
-// });
+// get request for notes id
 router.get("/:id", (req, res) => {
   console.log(`${req.method} request has been received.`);
   readFile("./db/db.json")
