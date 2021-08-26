@@ -49,7 +49,7 @@ router.get(`/:id`, async(req, res) => {
   //   };
   //   res.json(response);
   //   return;
-  }
+  // }
   res.json(requiredNote);
   return;
 });
