@@ -42,14 +42,14 @@ router.get(`/:id`, async(req, res) => {
   const requiredNote = await notes.filter((noteEl) => noteEl.id == reqId);
   console.log("Required Note is: ",requiredNote)
 
-  // if (requiredNote == "") {
-  //   const response = {
-  //     status: "404",
-  //     body: `note with id ${reqId} not found we have found ${requiredNote}`,
-  //   };
-  //   res.json(response);
-  //   return;
-  // }
+  if (requiredNote == "") {
+    const response = {
+      status: "404",
+      body: `note with id ${reqId} not found we have found ${requiredNote}`,
+    };
+    res.json(response);
+    return;
+  }
   res.json(requiredNote);
   return;
 });
