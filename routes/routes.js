@@ -40,12 +40,10 @@ router.get("/:id", (req, res) => {
       const filteredNotes = notes.filter((note) => note.id == req.params.id);
       console.log(filteredNotes)
       if (filteredNotes.length == 0) {
-        const response = {
-          status: "404",
-          body: `note with id ${req.params.id} not found`,
-          action:"Note deleted"
-        };
-        res.json(response);
+        res.status(400).json({
+          status: 'error',
+          error: `note with id ${ req.params.id} not found.`,
+        });
         return;
       }
       res.json(filteredNotes);
@@ -81,12 +79,10 @@ router.delete("/:id", (req, res) => {
       const notes = JSON.parse(data);
       const filteredNotes = notes.filter((note) => note.id !== req.params.id);
       if (filteredNotes.length == notes.length) {
-        const response = {
-          status: "404",
-          body: `note with id ${req.params.id} not found`,
-          action:"Note deleted"
-        };
-        res.json(response);
+        res.status(400).json({
+          status: 'error',
+          error: `note with id ${ req.params.id} not found.`,
+        });
         return;
       }
       res.json(filteredNotes);
